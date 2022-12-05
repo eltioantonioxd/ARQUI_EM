@@ -315,9 +315,9 @@ def deleteSensorD():
 
 #--------------------------------------------PUT---------------------------------------------------------------------------
 @app.route("/api/v1/<tabla>&company_api_key=<key>&id=<id>", methods=['PUT'])
-def createCompany(tabla,key,id):
+def updateCompany(tabla,key,id):
         data= request.get_json()
-        bandera=verificacion(data['company_api_key'])
+        bandera=verificacion(key)
         if bandera==True:
             if tabla=='Admin' or tabla=="Company":
                 return jsonify({"mensaje":"Error, tabla incorrecta"}),400
