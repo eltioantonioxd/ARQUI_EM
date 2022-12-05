@@ -322,15 +322,14 @@ def updateCompany(tabla,key,id):
             sqliteConnection = sqlite3.connect('tarea.db')
             cursor = sqliteConnection.cursor()
             if tabla=='Location':
-                print("iujasjfajioasjiasfojisjaoiioj")
                 company=data['company_id']
                 name=data['location_name']
                 country=data['location_country']
                 city=data['location_city']
                 meta=data['location_meta']
-                employee = (company,name,country,city,meta,id)
-                sql = """UPDATE Location SET company_id= ?, location_name = ?, location_country = ?, location_city = ?, location_meta = ? WHERE  id=?"""
-                cursor.execute(sql,employee)
+                employee = (company, name, country, city, meta, id)
+                sql = """UPDATE Location SET company_id=?, location_name =?, location_country=?, location_city=?, location_meta=? WHERE  id=?"""
+                cursor.execute(sql, (employee))
                 sqliteConnection.commit()
                 cursor.close()
                 return jsonify({"mensaje":"Operación exitosa, location actualizada"})
@@ -343,17 +342,17 @@ def updateCompany(tabla,key,id):
                 apikey=data['sensor_api_key']
                 employee = (location,name,category,meta, apikey,id)
                 sql = """UPDATE Sensor SET location_id= ?,sensor_name = ?, sensor_category = ?, sensor_meta = ?, sensor_api_key = ? WHERE  sensor_id=?"""
-                cursor.execute(sql,employee)
+                cursor.execute(sql,(employee))
                 sqliteConnection.commit()
                 cursor.close()
                 return jsonify({"mensaje":"Operación exitosa, Sensor actualizada"})
+            
             elif tabla=='Sensor Data':
                 dato1=data['dato1']
                 dato2=data['dato2']
-                print("fjiafsuijisaufujasusaiuifsajfsuisaujfsauifsaju")
                 employee = (dato1,dato2,id)
-                sql = """UPDATE Sensor SET dato1 = ?, dato2 = ? WHERE sensor_id= ?"""
-                cursor.execute(sql,employee)
+                sql = """UPDATE 'Sensor Data' SET dato1 = ?, dato2 = ? WHERE sensor_id= ?"""
+                cursor.execute(sql,(employee))
                 sqliteConnection.commit()
                 cursor.close()
                 return jsonify({"mensaje":"Operación exitosa, Sensor Data actualizada"})    
