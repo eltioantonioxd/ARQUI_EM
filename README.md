@@ -5,6 +5,7 @@
 - SQLite
 - Python
 - Flask
+- Postman
 
 
 :cloud: deploy AWS
