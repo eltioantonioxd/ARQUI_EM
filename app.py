@@ -188,7 +188,7 @@ def sensor_data():
             cursor.execute(sql, employee)
             sqliteConnection.commit()
             cursor.close()
-            return jsonify({"mensaje":"Datos de sensor data creados exitosamente!"})
+            return jsonify({"mensaje":"Datos de sensor data creados exitosamente!"}),201
         else: 
             return jsonify({"mensaje":"api key incorrecto"})
 
@@ -205,26 +205,24 @@ def eliminateCompany():
             query = 'select * from Company'
             cursor.execute(query)
             record = cursor.fetchall()
-            deleteCompany = True
+            deleteCompany = False
             for company in record:
-                print(company[1])
-                if company[1] ==  data['company_api_key']:
+                print(company[2])
+                if company[2] ==  data['company_api_key']:
                     deleteCompany = True
                     employee = (data['company_api_key'])
                     sql = """DELETE FROM Company WHERE  company_api_key=?"""
-                    cursor.execute(sql, (employee,))
+                    cursor.execute(sql, employee)
                     sqliteConnection.commit()
                     cursor.close()
                     return jsonify({"mensaje":"Operación exitosa, compañia eliminada"})
-                else: 
-                    deleteCompany = False
                     
             if deleteCompany == False: 
                 return jsonify({"mensaje":"Error! Compañia no encontrada"})
         else:
             return jsonify({"mensaje": 'Usuario y/o contraseña incorrecto'})
 
-#--------------------------------------------DEKETE LOCATION---------------------------------------------------------------------------
+#--------------------------------------------DELETE LOCATION---------------------------------------------------------------------------
 @app.route("/api/v1/deleteLocation", methods=['DELETE'])
 def deleteLocation():
     if request.method == 'DELETE':
@@ -324,33 +322,38 @@ def updateCompany(tabla,key,id):
             sqliteConnection = sqlite3.connect('tarea.db')
             cursor = sqliteConnection.cursor()
             if tabla=='Location':
+                print("iujasjfajioasjiasfojisjaoiioj")
+                company=data['company_id']
                 name=data['location_name']
                 country=data['location_country']
                 city=data['location_city']
                 meta=data['location_meta']
-                employee = (name,country,city,meta,id)
-                sql = """UPDATE Location SET location_name = ?, location_country = ?, location_city = ?, location_meta = ? WHERE  location_id=?"""
-                cursor.execute(sql, (employee,))
+                employee = (company,name,country,city,meta,id)
+                sql = """UPDATE Location SET company_id= ?, location_name = ?, location_country = ?, location_city = ?, location_meta = ? WHERE  id=?"""
+                cursor.execute(sql,employee)
                 sqliteConnection.commit()
                 cursor.close()
                 return jsonify({"mensaje":"Operación exitosa, location actualizada"})
+            
             elif tabla=='Sensor':
+                location=data["location_id"]
                 name=data['sensor_name']
                 category=data['sensor_category']
                 meta=data['sensor_meta']
                 apikey=data['sensor_api_key']
-                employee = (name,category,meta, apikey,id)
-                sql = """UPDATE Sensor SET sensor_name = ?, sensor_category = ?, sensor_meta = ?, sensor_api_key = ? WHERE  sensor_id=?"""
-                cursor.execute(sql, (employee,))
+                employee = (location,name,category,meta, apikey,id)
+                sql = """UPDATE Sensor SET location_id= ?,sensor_name = ?, sensor_category = ?, sensor_meta = ?, sensor_api_key = ? WHERE  sensor_id=?"""
+                cursor.execute(sql,employee)
                 sqliteConnection.commit()
                 cursor.close()
                 return jsonify({"mensaje":"Operación exitosa, Sensor actualizada"})
             elif tabla=='Sensor Data':
                 dato1=data['dato1']
                 dato2=data['dato2']
+                print("fjiafsuijisaufujasusaiuifsajfsuisaujfsauifsaju")
                 employee = (dato1,dato2,id)
-                sql = """UPDATE Sensor SET dato1 = ?, dato2 = ? WHERE sensor_id=?"""
-                cursor.execute(sql, (employee,))
+                sql = """UPDATE Sensor SET dato1 = ?, dato2 = ? WHERE sensor_id= ?"""
+                cursor.execute(sql,employee)
                 sqliteConnection.commit()
                 cursor.close()
                 return jsonify({"mensaje":"Operación exitosa, Sensor Data actualizada"})    
