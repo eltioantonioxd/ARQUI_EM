@@ -212,7 +212,7 @@ def eliminateCompany():
                     deleteCompany = True
                     employee = (data['company_api_key'])
                     sql = """DELETE FROM Company WHERE  company_api_key=?"""
-                    cursor.execute(sql, employee)
+                    cursor.execute(sql, (employee,))
                     sqliteConnection.commit()
                     cursor.close()
                     return jsonify({"mensaje":"Operación exitosa, compañia eliminada"})
