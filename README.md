@@ -5,3 +5,7 @@
 - SQLite
 - Python
 - Flask
+
+
+:cloud: deploy AWS
+
